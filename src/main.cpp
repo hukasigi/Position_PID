@@ -75,15 +75,13 @@ void loop() {
     static unsigned long prev_time = micros();
     unsigned long        now_time  = micros();
     if (now_time - prev_time >= CONTROL_CYCLE) {
-        double dt = (now_time - prev_time) / 1e6;
-        prev_time = now_time;
+        prev_time += CONTROL_CYCLE;
+        double dt = CONTROL_CYCLE / 1e6;
 
         /* NOTE: 割り込みが発生したときにposの値は違う値になってしまうので、
         別の変数にコピーして使用する*/
         long pos_now = 0;
-        portENTER_CRITICAL(&timerMux);
-        pos_now = myenc.getCount();
-        portEXIT_CRITICAL(&timerMux);
+        pos_now      = myenc.getCount();
 
         int error = target - pos_now;
         // ±2048の範囲に収める
