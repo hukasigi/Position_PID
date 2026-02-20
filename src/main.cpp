@@ -40,6 +40,7 @@ portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 void setup() {
     Serial.begin(115200); // put function declarations here:
 
+    // プルアップ抵抗、なし
     ESP32Encoder::useInternalWeakPullResistors = puType::none;
     myenc.attachHalfQuad(PIN_ROTARY_A, PIN_ROTARY_B);
 
