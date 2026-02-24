@@ -24,6 +24,7 @@ const uint16_t CONTROL_CYCLE = 2000;
 
 // 目標位置
 const int16_t angle  = 200;
+const int16_t range  = 4096;
 int           target = map(angle, 0, 360, 0, 4096);
 
 const double KP = 3.;
@@ -86,8 +87,11 @@ void loop() {
 
         int error = target - pos_now;
         // ±2048の範囲に収める
-        if (error > 2048) error -= 4096;
-        if (error < -2048) error += 4096;
+        // if (error > 2048) error -= 4096;
+        // if (error < -2048) error += 4096;
+        error = fmod(error + range / 2.0, range);
+        if (error < 0) error += range;
+        error -= range / 2.0;
 
         double derivative = (error - prev_error) / dt;
         prev_error        = error;
